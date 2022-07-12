@@ -1,0 +1,38 @@
+CREATE TABLE "users" (
+  "id" BIGSERIAL UNIQUE PRIMARY KEY NOT NULL,
+  "username" VARCHAR NOT NULL,
+  "rol" VARCHAR NOT NULL,
+  "email" VARCHAR UNIQUE NOT NULL,
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT (NOW()),
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT (NOW()),
+  "deleted_at" TIMESTAMPTZ NOT NULL DEFAULT '0001-01-01 00:00:00Z'
+);
+
+CREATE TABLE "products" (
+  "id" BIGSERIAL UNIQUE PRIMARY KEY NOT NULL,
+  "name" VARCHAR NOT NULL,
+  "price" DECIMAL NOT NULL,
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT (NOW()),
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT (NOW()),
+  "deleted_at" TIMESTAMPTZ NOT NULL DEFAULT '0001-01-01 00:00:00Z'
+);
+
+CREATE TABLE "sales" (
+  "id" BIGSERIAL PRIMARY KEY NOT NULL,
+  "id_user" BIGINT,
+  "id_product" BIGINT,
+  "amount" DECIMAL NOT NULL,
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT (NOW()),
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT (NOW()),
+  "deleted_at" TIMESTAMPTZ NOT NULL DEFAULT '0001-01-01 00:00:00Z'
+);
+
+CREATE INDEX ON "users" ("username");
+
+CREATE INDEX ON "products" ("id");
+
+CREATE INDEX ON "sales" ("created_at");
+
+ALTER TABLE "sales" ADD FOREIGN KEY ("id_user") REFERENCES "users" ("id");
+
+ALTER TABLE "sales" ADD FOREIGN KEY ("id_product") REFERENCES "products" ("id");
