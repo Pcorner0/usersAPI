@@ -1,4 +1,4 @@
-package controller
+package controllers
 
 import (
 	"github.com/pcorner0/usersAPI/database"

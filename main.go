@@ -18,7 +18,7 @@ func main() {
 	)
 
 	//Users routes
-	routes.Users(e)
+	routes.MyRoutes(e)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
