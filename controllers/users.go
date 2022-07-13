@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pcorner0/usersAPI/database"
 	"github.com/pcorner0/usersAPI/models"
+	"github.com/pcorner0/usersAPI/utils"
 	"gorm.io/gorm"
 )
 
@@ -31,7 +32,15 @@ func (u *RepoUsers) CreateUser(c echo.Context) error {
 		c.JSON(http.StatusBadRequest, err)
 		return err
 	}
-	err := models.CreateUser(u.DB, User)
+
+	// encrypt the password
+	encriptedPassword, err := utils.HashPassword(User.Password)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+	User.Password = encriptedPassword
+	err = models.CreateUser(u.DB, User)
+
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
